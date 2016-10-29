@@ -1,5 +1,6 @@
 import libc
 import Console
+import Queue
 
 extension Droplet {
     enum ExecutionError: Swift.Error {
@@ -44,11 +45,15 @@ extension Droplet {
 
         // the version command prints the frameworks version.
         let version = VersionCommand(console: console)
+      
+        let workerCommand = WorkerCommand(console: console,
+                                          worker: DefaultWorker.worker)
 
         // adds the commands
         commands.append(serve)
         commands.append(prepare)
         commands.append(version)
+        commands.append(workerCommand)
         
         for provider in providers {
             provider.beforeRun(self)
@@ -65,6 +70,12 @@ extension Droplet {
         if !args.flag("help") && args.values.count == 0 {
             console.warning("No command supplied, defaulting to serve...")
             args.insert("serve", at: 0)
+            args.insert("--worker", at: 1)
+        }
+      
+        if let _ = args.options["worker"]?.bool {
+            console.info("Starting worker", newLine: true)
+            try workerCommand.run(arguments: arguments)
         }
 
         try console.run(

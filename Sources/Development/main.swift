@@ -688,7 +688,11 @@ let config = try TLS.Config(
     verifyCertificates: true
 )
 
+import Queue
+
+try! drop.queue.enqueue(job: EmailJob(email: "test"))
+
 drop.run(servers: [
-    "test": ("gertrude.codes", 8080, .none),
-    "secure": ("gertrude.codes", 8443, .tls(config)),
+    "test": ("0.0.0.0", 8080, .none),
+    //"secure": ("gertrude.codes", 8443, .tls(config)),
 ])
