@@ -6,6 +6,7 @@ import HMAC
 import Cipher
 import Fluent
 import Transport
+import Queue
 
 public let VERSION = "1.1.0"
 
@@ -148,6 +149,9 @@ public class Droplet {
         The providers that have been added.
     */
     public internal(set) var providers: [Provider]
+  
+    
+    public var queue: VaporQueue
 
     /**
         Initialize the Droplet.
@@ -254,6 +258,7 @@ public class Droplet {
         storage = [:]
         preparations = []
         providers = []
+        queue = AnyQueue(MemoryQueue<Job>(name: "default_queue"))
 
         do {
             hash = try CryptoHasher(config: config)
