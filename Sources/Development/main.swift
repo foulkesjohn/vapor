@@ -688,6 +688,10 @@ let config = try TLS.Config(
     verifyCertificates: true
 )
 
+drop.postPrepare = {
+  //do stuff before serve now that database is setup
+}
+
 drop.run(servers: [
     "test": ("gertrude.codes", 8080, .none),
     "secure": ("gertrude.codes", 8443, .tls(config)),
