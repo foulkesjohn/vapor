@@ -38,7 +38,9 @@ extension Droplet {
 
         // the serve command will boot the servers
         // and always runs the prepare command
-        let serve = Serve(console: console, prepare: prepare) {
+        let serve = Serve(console: console,
+                          prepare: prepare,
+                          postPrepare: self.postPrepare) {
             try self.bootServers(servers)
         }
 

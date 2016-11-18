@@ -10,6 +10,8 @@ import SocksCore
 
 public let VERSION = "1.1.0"
 
+public typealias PostPrepareFunction = () throws -> ()
+
 public class Droplet {
     /**
      The arguments passed to the droplet.
@@ -149,6 +151,9 @@ public class Droplet {
         The providers that have been added.
     */
     public internal(set) var providers: [Provider]
+  
+  
+    public var postPrepare: PostPrepareFunction?
 
     /**
         Initialize the Droplet.
